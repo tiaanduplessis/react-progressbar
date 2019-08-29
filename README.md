@@ -2,27 +2,71 @@
 
 > Little React wrapper around progressbar.js
 
-[![NPM](https://img.shields.io/npm/v/react-progressbar.svg)](https://www.npmjs.com/package/react-progressbar) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save react-progressbar
+npm install --save @tiaanduplessis/react-progressbar
 ```
 
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
-
-import { useMyHook } from 'react-progressbar'
-
+import { Circle, Line } from '@tiaanduplessis/react-progressbar'
 const Example = () => {
-  const example = useMyHook()
-  return (
-    <div>{example}</div>
-  )
+  return <>
+          <Circle
+            style={{ width: '200px' }}
+            progress={10 / 100}
+            color={'red'}
+            trailColor={'pink'}
+            strokeWidth={4}
+            easing='easeInOut'
+            text={{
+              value: 'Example',
+              style: {
+                color: '#515251',
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                textAlign: 'center',
+                padding: 0,
+                margin: 0,
+                transform: {
+                  prefix: true,
+                  value: 'translate(-50%, -50%)'
+                }
+              }
+            }}
+          />
+
+
+        <Line
+          progress={10/100}
+          strokeWidth={4}
+          easing='easeInOut'
+          color={'blue'}
+          trailColor='orange'
+          svgStyle={{
+            display: 'block',
+            width: '100%',
+            'max-height': '1em',
+            'border-radius': '20px'
+          }}
+          text={{
+            className: 'dashboard-tile-line-progress-text',
+            style: {
+              color: '#515251',
+              padding: 0,
+              margin: 0
+            }
+          }}
+        />
+  </>
 }
+
+
 ```
 
 ## License
@@ -31,4 +75,4 @@ MIT © [tiaanduplessis](https://github.com/tiaanduplessis)
 
 ---
 
-This hook is created using [create-react-hook](https://github.com/hermanya/create-react-hook).
+Created using [create-react-hook](https://github.com/hermanya/create-react-hook).
