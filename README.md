@@ -63,6 +63,21 @@ const Example = () => {
             }
           }}
         />
+
+
+        <SemiCircle
+          strokeWidth={6},
+          color={'#FFEA82'},
+          trailColor='#eee',
+          trailWidth={1},
+          easing='easeInOut',
+          duration={1400},
+          svgStyle=null,
+          text= {
+            value: '',
+            alignToBottom: false
+          }
+        />
   </>
 }
 
