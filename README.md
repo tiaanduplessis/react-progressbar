@@ -10,6 +10,79 @@
 npm install --save @tiaanduplessis/react-progressbar
 ```
 
+## Usage
+
+```jsx
+import { Circle, Line } from '@tiaanduplessis/react-progressbar'
+const Example = () => {
+  return <>
+          <Circle
+            style={{ width: '200px' }}
+            progress={10 / 100}
+            color={'red'}
+            trailColor={'pink'}
+            strokeWidth={4}
+            easing='easeInOut'
+            text={{
+              value: 'Example',
+              style: {
+                color: '#515251',
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                textAlign: 'center',
+                padding: 0,
+                margin: 0,
+                transform: {
+                  prefix: true,
+                  value: 'translate(-50%, -50%)'
+                }
+              }
+            }}
+          />
+
+
+        <Line
+          progress={10/100}
+          strokeWidth={4}
+          easing='easeInOut'
+          color={'blue'}
+          trailColor='orange'
+          svgStyle={{
+            display: 'block',
+            width: '100%',
+            'max-height': '1em',
+            'border-radius': '20px'
+          }}
+          text={{
+            className: 'dashboard-tile-line-progress-text',
+            style: {
+              color: '#515251',
+              padding: 0,
+              margin: 0
+            }
+          }}
+        />
+
+
+        <SemiCircle
+          strokeWidth={6},
+          color={'#FFEA82'},
+          trailColor='#eee',
+          trailWidth={1},
+          easing='easeInOut',
+          duration={1400},
+          svgStyle=null,
+          text= {
+            value: '',
+            alignToBottom: false
+          }
+        />
+  </>
+}
+
+```
+
 ## Props
 
 <table width="80%">
@@ -98,80 +171,6 @@ npm install --save @tiaanduplessis/react-progressbar
         <td><code>false</code></td>
     </tr>
 </table>
-
-## Usage
-
-```jsx
-import { Circle, Line } from '@tiaanduplessis/react-progressbar'
-const Example = () => {
-  return <>
-          <Circle
-            style={{ width: '200px' }}
-            progress={10 / 100}
-            color={'red'}
-            trailColor={'pink'}
-            strokeWidth={4}
-            easing='easeInOut'
-            text={{
-              value: 'Example',
-              style: {
-                color: '#515251',
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                textAlign: 'center',
-                padding: 0,
-                margin: 0,
-                transform: {
-                  prefix: true,
-                  value: 'translate(-50%, -50%)'
-                }
-              }
-            }}
-          />
-
-
-        <Line
-          progress={10/100}
-          strokeWidth={4}
-          easing='easeInOut'
-          color={'blue'}
-          trailColor='orange'
-          svgStyle={{
-            display: 'block',
-            width: '100%',
-            'max-height': '1em',
-            'border-radius': '20px'
-          }}
-          text={{
-            className: 'dashboard-tile-line-progress-text',
-            style: {
-              color: '#515251',
-              padding: 0,
-              margin: 0
-            }
-          }}
-        />
-
-
-        <SemiCircle
-          strokeWidth={6},
-          color={'#FFEA82'},
-          trailColor='#eee',
-          trailWidth={1},
-          easing='easeInOut',
-          duration={1400},
-          svgStyle=null,
-          text= {
-            value: '',
-            alignToBottom: false
-          }
-        />
-  </>
-}
-
-
-```
 
 ## License
 
