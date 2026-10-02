@@ -49,6 +49,7 @@
   "packageManager": "yarn@1.22.22",
   "files": [
     "dist",
-    "src/index.js"
+    "src/index.js",
+    "DEPENDENCY_REFRESH.md"
   ]
 }

@@ -172,6 +172,41 @@ const Example = () => {
     </tr>
 </table>
 
+## Development
+
+Use Node 22.22.2+ (22.x) or Node 24.15.0+ (24.x) and Yarn 1.22.22 for
+contributing. The published library still supports Node >=8 and React ^16.8.6;
+these newer Node versions are requirements of the development tools only.
+
+```sh
+yarn install --frozen-lockfile --ignore-scripts
+yarn run check
+```
+
+`check` runs non-mutating lint, both builds, component characterization tests,
+real progressbar.js/jsdom integration, and CJS/ESM distribution checks. Tests use
+a deterministic SVG path-length shim because jsdom does not implement SVG
+geometry; this is not a cross-browser rendering test. React 16's existing
+`componentWillReceiveProps` warning is expected.
+
+The repository uses one authoritative lockfile, `yarn.lock`. The existing
+`prepare` hook builds the package during a normal installation; using
+`--ignore-scripts` above makes that execution explicit. To inspect the package
+without rerunning lifecycle scripts after `yarn run check`:
+
+```sh
+npm pack --ignore-scripts
+```
+
+The package includes `dist/index.js`, `dist/index.es.js`, their source maps, and
+`src/index.js`. React is external in both builds. The `.es.js` file is intended
+for ESM-aware bundlers; the filename and CommonJS package default are unchanged.
+
+See [the dependency refresh notes](DEPENDENCY_REFRESH.md) for security evidence,
+compatibility tests, known pre-existing component limitations, and the exact
+old dependency-PR mapping. The legacy Travis file is unchanged and is not a
+modern Node 22/24 validation gate.
+
 ## License
 
 MIT © [tiaanduplessis](https://github.com/tiaanduplessis)
