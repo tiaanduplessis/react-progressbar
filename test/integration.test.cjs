@@ -62,4 +62,55 @@ test('actual-library text updates retain the existing DOM text bug', async () =>
   container.remove()
 })
 
+test('zero-duration updates preserve animation step state without the default delay', async () => {
+  for (const name of ['Circle', 'Line', 'SemiCircle']) {
+    const Shape = shapes[name]({}).type
+    const Type = shapes[name]({}).props.Type
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    let instance
+    const steps = []
+    const attachment = { label: 'custom-data' }
+    const step = (state, shape, data) => {
+      steps.push({ state: { ...state }, shape, data })
+    }
+    const ref = value => {
+      instance = value
+    }
+    ReactDOM.render(React.createElement(Shape, {
+      Type, duration: 100, options: { duration: 0, attachment },
+      progress: 0.5, from: { x: 0 }, to: { x: 1 }, step, ref
+    }), container)
+    // Explicitly characterize the draft's upstream timing change: no final
+    // animation step runs synchronously before the next frame.
+    assert.deepEqual(steps.map(call => call.state), [{ x: 0 }])
+    await new Promise(resolve => setTimeout(resolve, 50))
+    assert.equal(instance.shape.value(), 0.5)
+    assert.deepEqual(steps[0].state, { x: 0 })
+    assert.deepEqual(steps.at(-1).state, { offset: 50, x: 0.5 })
+    assert.equal(steps.at(-1).shape, instance.shape)
+    assert.deepEqual(steps.at(-1).data, attachment)
+    // progressbar.js 1.1.1's pollution fix deep-merges options, cloning this value.
+    assert.notEqual(steps.at(-1).data, attachment)
+    const textNode = instance.shape.text
+    ReactDOM.render(React.createElement(Shape, { Type, progress: 0.75, ref }), container)
+    await new Promise(resolve => setTimeout(resolve, 50))
+    assert.equal(instance.shape.value(), 0.75)
+    assert.deepEqual(steps.at(-1).state, { offset: 25, x: 0.75 })
+    for (const progress of [0.1, 0.4, 0.9]) {
+      ReactDOM.render(React.createElement(Shape, { Type, progress, ref }), container)
+    }
+    await new Promise(resolve => setTimeout(resolve, 50))
+    assert.equal(instance.shape.value(), 0.9)
+    assert.deepEqual(steps.at(-1).state, { offset: 10, x: 0.9 })
+    assert.equal(steps.at(-1).shape, instance.shape)
+    assert.deepEqual(steps.at(-1).data, attachment)
+    // Keep this dependency-compatibility assertion separate from the known text bug.
+    instance.shape.text = textNode
+    instance.destroy()
+    ReactDOM.unmountComponentAtNode(container)
+    container.remove()
+  }
+})
+
 test.after(() => dom.window.close())

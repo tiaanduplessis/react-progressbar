@@ -1,5 +1,17 @@
-import React, { Component, createRef } from 'react'
-import ProgressBar from 'progressbar.js'
+import React from 'react'
+
+const { Component, createRef } = React
+
+// progressbar.js 1.1.1's browser entry requires `self` while being loaded.
+// Delay loading until mount so importing/server-rendering stays safe in Node.
+const createType = name => function (container, options) {
+  const ProgressBar = require('progressbar.js')
+  return new ProgressBar[name](container, options)
+}
+
+const CircleType = createType('Circle')
+const LineType = createType('Line')
+const SemiCircleType = createType('SemiCircle')
 
 class Shape extends Component {
   constructor() {
@@ -70,9 +82,10 @@ class Shape extends Component {
     }
 
     this.shape = new Type(this.div.current, opts)
+    this.duration = opts.duration
 
     if (progress) {
-      this.shape.animate(progress)
+      this.animate(progress)
     }
 
     this.otherProps = otherProps
@@ -90,7 +103,13 @@ class Shape extends Component {
   }
 
   animate = progress => {
-    this.shape.animate(progress)
+    // Shifty treats zero as its default duration. A positive value below clock
+    // precision keeps next-frame completion and the animation step state intact.
+    if (this.duration === 0) {
+      this.shape.animate(progress, { duration: Number.MIN_VALUE })
+    } else {
+      this.shape.animate(progress)
+    }
   }
 
   set = progress => {
@@ -106,10 +125,10 @@ class Shape extends Component {
   }
 }
 
-export const Circle = props => <Shape Type={ProgressBar.Circle} {...props} />
+export const Circle = props => <Shape Type={CircleType} {...props} />
 
-export const Line = props => <Shape Type={ProgressBar.Line} {...props} />
+export const Line = props => <Shape Type={LineType} {...props} />
 
 export const SemiCircle = props => (
-  <Shape Type={ProgressBar.SemiCircle} {...props} />
+  <Shape Type={SemiCircleType} {...props} />
 )

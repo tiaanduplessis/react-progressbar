@@ -16,7 +16,10 @@ function fixture () {
         calls.push(['construct', name, container, options, this])
       }
 
-      animate (value) { calls.push(['animate', value]) }
+      animate (value, options) {
+        calls.push(options === undefined ? ['animate', value] : ['animate', value, options])
+      }
+
       set (value) { calls.push(['set', value]) }
       destroy () { calls.push(['destroy']) }
     }
@@ -134,6 +137,27 @@ test('Type prop continues to override the wrapper default', () => {
   const f = fixture()
   const view = mount(React.createElement(f.exports.Circle, { Type: f.library.Line }))
   assert.equal(f.calls[0][1], 'Line')
+  view.unmount()
+})
+
+test('server rendering does not load the browser-only progressbar entry', () => {
+  const server = require('react-dom/server')
+  const browserOnly = new Proxy({}, {
+    get () { throw new Error('The browser library must not be used during SSR') }
+  })
+  const shapes = loadSource(browserOnly)
+  for (const name of ['Circle', 'Line', 'SemiCircle']) {
+    assert.match(server.renderToString(React.createElement(shapes[name], { progress: 0.5 })), /^<div.*><\/div>$/)
+  }
+})
+
+test('zero duration keeps the animation path, including options precedence', () => {
+  const f = fixture()
+  const view = mount(React.createElement(f.exports.Line, { duration: 100, options: { duration: 0 }, progress: 0.5 }))
+  assert.deepEqual(f.calls.at(-1), ['animate', 0.5, { duration: Number.MIN_VALUE }])
+  view.update(React.createElement(f.exports.Line, { progress: 0 }))
+  assert.deepEqual(f.calls.at(-1), ['animate', 0, { duration: Number.MIN_VALUE }])
+  assert.equal(f.calls.filter(call => call[0] === 'set').length, 0)
   view.unmount()
 })
 

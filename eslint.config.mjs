@@ -22,7 +22,10 @@ export default [
   },
   {
     files: ['src/index.js'],
-    languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    languageOptions: {
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      globals: { require: 'readonly' }
+    },
     rules: {
       // React and Shape are consumed by JSX, whose names are not JS references.
       'no-unused-vars': ['error', { varsIgnorePattern: '^(React|Shape)$' }],
