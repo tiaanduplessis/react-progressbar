@@ -13,7 +13,8 @@ npm install --save @tiaanduplessis/react-progressbar
 ## Usage
 
 ```jsx
-import { Circle, Line } from '@tiaanduplessis/react-progressbar'
+import React from 'react'
+import { Circle, Line, SemiCircle } from '@tiaanduplessis/react-progressbar'
 const Example = () => {
   return <>
           <Circle
@@ -66,17 +67,18 @@ const Example = () => {
 
 
         <SemiCircle
-          strokeWidth={6},
-          color={'#FFEA82'},
-          trailColor='#eee',
-          trailWidth={1},
-          easing='easeInOut',
-          duration={1400},
-          svgStyle=null,
-          text= {
+          progress={10 / 100}
+          strokeWidth={6}
+          color={'#FFEA82'}
+          trailColor='#eee'
+          trailWidth={1}
+          easing='easeInOut'
+          duration={1400}
+          svgStyle={null}
+          text={{
             value: '',
             alignToBottom: false
-          }
+          }}
         />
   </>
 }
@@ -167,7 +169,7 @@ const Example = () => {
     <tr>
         <td><code>warnings</code></td>
         <td><code>boolean</code></td>
-        <td>Function called when user taps the view area</td>
+        <td>Enable console warnings when progressbar.js detects potentially incorrect usage</td>
         <td><code>false</code></td>
     </tr>
 </table>
