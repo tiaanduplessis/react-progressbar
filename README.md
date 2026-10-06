@@ -177,26 +177,56 @@ const Example = () => {
 ## Development builds
 
 Development builds pin progressbar.js 1.1.0 and Shifty 2.9.1. Shifty 2.9.1
-corrects the Node export shape used by the build without changing its animation
-source from 2.9.0. The direct development dependency and root Yarn resolution
-keep fresh npm and Yarn development installs on that same build dependency.
+corrects the Node export shape without changing its animation source from 2.9.0.
+The direct development dependency and root Yarn resolution keep npm and Yarn
+builds on that audited dependency pair.
+
+A build-only Rollup plugin handles the exact Shifty cancellation record at
+progressbar.js's existing promise chain. It keeps `stop(false)`: canceled
+completion callbacks stay uncalled, while unexpected rejection reasons and
+completion-callback errors remain observable. It does not change component
+source, duration-zero handling, attachment identity, or the React peer range.
+The plugin also removes Shifty's audited trailing source-map URL in memory to
+avoid a Rollup 1 cached-output inconsistency, preserving mappings to original
+source bytes. Installed dependency files are never patched.
+
+The guard verifies exact source/entry hashes, metadata, actual dependency graph,
+and executable handler output. Dependency changes fail closed and need review.
+After any dependency/metadata guard failure, restart the build process, even
+when restoring the files: the legacy resolver can retain stale data after a
+failed watch build. `npm start` output is development-only and must not be used
+as a packaging input.
+
+`npm run build` writes both formats into clean staging, then transactionally
+replaces `dist` only after both succeed. A failed promotion restores the prior
+directory; if restoration itself fails, the error reports a retained backup.
+`npm run test:package` packs a separate fresh staging snapshot, so stale root
+or watch output cannot enter that qualification archive. Do not bypass normal
+build/prepare checks when preparing a package for release.
 
 The generated CommonJS and ESM files bundle progressbar.js and Shifty; React
-remains a peer dependency. Root Yarn resolutions do not propagate to projects
-installing this package. They are build controls, not a guarantee about a
-consumer's independently installed Shifty version or direct imports of `src`.
+remains a peer. Root Yarn resolutions do not propagate to installing projects.
+The compatibility patch applies to generated bundles, not a consumer's separate
+dependency tree or direct `src` imports.
 
-Run `npm run test:package` after installing development dependencies. This
-builds both formats, packs with lifecycle scripts disabled, and checks the
-extracted package with only its React peer available. It requires POSIX `tar`.
-The checks cover both advertised entry files, server rendering, and real shape
-creation and completed animations in JSDOM with synthetic SVG geometry.
+Run `npm run test:build` for guard, cache/watch, source-map and staging-failure
+checks. Run `npm run test:package` for actual packed CJS and Rollup-consumed ESM,
+SSR, interrupted/completed animations, callback/error visibility, zero duration
+and attachment identity. Packed qualification requires Node 14+ and POSIX `tar`.
+It uses JSDOM with synthetic SVG geometry; native-browser and historical Node
+verification remain separate. Direct native Node loading of the ESM file is not
+supported by the existing React 16 CommonJS named-export arrangement; it is checked via
+the advertised bundler consumption path.
 
-Interrupted animations are not covered by that smoke pass: progressbar.js 1.1.0
-leaves a rejected promise unhandled when a running animation is replaced. The
-existing text, option-update, and unmount behavior is also unchanged. Native
-browser verification and broader runtime compatibility work remain separate;
-these build checks do not expand the supported React peer range.
+For an explicit published-artifact comparison, obtain the original 1.0.0 archive
+with `npm pack @tiaanduplessis/react-progressbar@1.0.0 --ignore-scripts`, then run
+`npm run test:package -- --baseline /absolute/path/to/archive.tgz`. This optional
+control verifies the archive's known integrity before testing its cancellation
+behavior and recording its historical missing ESM entry. The tests themselves
+do not download packages.
+
+Existing text, option-update and unmount limitations remain unchanged. These
+focused checks do not claim additional React support or release readiness.
 
 ## License
 
