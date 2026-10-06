@@ -6660,7 +6660,7 @@ jsbn@~0.1.0:
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
-jsdom@^11.5.1:
+jsdom@11.12.0, jsdom@^11.5.1:
   version "11.12.0"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-11.12.0.tgz#1a80d40ddd378a1de59656e9e6dc5a3ba8657bc8"
   integrity sha512-y8Px43oyiBM13Zc1z780FrfNLJCXTL40EWlty/LXUtcjykRBNgLlCjWXpfSPBl2iv+N7koQN+dvqszHZgT/Fjw==
@@ -8837,7 +8837,7 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-progressbar.js@^1.1.0:
+progressbar.js@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/progressbar.js/-/progressbar.js-1.1.0.tgz#300f99be40ba93fb0867f91dff01771236cade70"
   integrity sha512-K68/xcyXKo2I6T3PfIkXrRaycxROmWeU4bugb49iulWR25cU94PM0cfZ47S0jDhG5K3vPhZwCOy1fgb5Pgh6UQ==
@@ -9885,10 +9885,10 @@ shellwords@^0.1.1:
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
 
-shifty@^2.1.2:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/shifty/-/shifty-2.9.0.tgz#6488fb748e64e5865c8d1d9b8f1762be17e7cc86"
-  integrity sha512-CMPneof4IWabiu7KVCffYh4T+o2BeTC4OjQzbGGezYSDDcuGk4MWZY77KHV2LXWS78T0NgCDUrUfsRNZNvhevg==
+shifty@2.9.1, shifty@^2.1.2:
+  version "2.9.1"
+  resolved "https://registry.npmjs.org/shifty/-/shifty-2.9.1.tgz#f37e5c3322803f8c02b328bc88c75421a609c456"
+  integrity sha512-vo9ruo+r214O3QDyoCDzBjQ65lXm0L1fL8HMZG/SA80RdP68eSxj/4yaTj6XdLsMRjdB/H9igApx9w8Wr3jTjQ==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"

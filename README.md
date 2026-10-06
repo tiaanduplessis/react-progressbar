@@ -174,6 +174,30 @@ const Example = () => {
     </tr>
 </table>
 
+## Development builds
+
+Development builds pin progressbar.js 1.1.0 and Shifty 2.9.1. Shifty 2.9.1
+corrects the Node export shape used by the build without changing its animation
+source from 2.9.0. The direct development dependency and root Yarn resolution
+keep fresh npm and Yarn development installs on that same build dependency.
+
+The generated CommonJS and ESM files bundle progressbar.js and Shifty; React
+remains a peer dependency. Root Yarn resolutions do not propagate to projects
+installing this package. They are build controls, not a guarantee about a
+consumer's independently installed Shifty version or direct imports of `src`.
+
+Run `npm run test:package` after installing development dependencies. This
+builds both formats, packs with lifecycle scripts disabled, and checks the
+extracted package with only its React peer available. It requires POSIX `tar`.
+The checks cover both advertised entry files, server rendering, and real shape
+creation and completed animations in JSDOM with synthetic SVG geometry.
+
+Interrupted animations are not covered by that smoke pass: progressbar.js 1.1.0
+leaves a rejected promise unhandled when a running animation is replaced. The
+existing text, option-update, and unmount behavior is also unchanged. Native
+browser verification and broader runtime compatibility work remain separate;
+these build checks do not expand the supported React peer range.
+
 ## License
 
 MIT © [tiaanduplessis](https://github.com/tiaanduplessis)
